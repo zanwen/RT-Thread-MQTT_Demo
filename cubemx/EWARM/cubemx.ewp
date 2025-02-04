@@ -1058,38 +1058,14 @@
     <group>
       <name>User</name>
       <file>
-        <name>$PROJ_DIR$/../D:/Workspace/RT-Thread/mqtt_demo/cubemx/Src/main.c</name>
+        <name>$PROJ_DIR$/../Src/main.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$/../D:/Workspace/RT-Thread/mqtt_demo/cubemx/Src/stm32f1xx_it.c</name>
+        <name>$PROJ_DIR$/../Src/stm32f1xx_it.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$/../D:/Workspace/RT-Thread/mqtt_demo/cubemx/Src/stm32f1xx_hal_msp.c</name>
+        <name>$PROJ_DIR$/../Src/stm32f1xx_hal_msp.c</name>
       </file>
-      <group>
-        <name>D:</name>
-        <group>
-          <name>Workspace</name>
-          <group>
-            <name>RT-Thread</name>
-            <group>
-              <name>mqtt_demo</name>
-              <group>
-                <name>cubemx</name>
-                <file>
-                  <name>$PROJ_DIR$/../D:/Workspace/RT-Thread/mqtt_demo/cubemx/Src/main.c</name>
-                </file>
-                <file>
-                  <name>$PROJ_DIR$/../D:/Workspace/RT-Thread/mqtt_demo/cubemx/Src/stm32f1xx_it.c</name>
-                </file>
-                <file>
-                  <name>$PROJ_DIR$/../D:/Workspace/RT-Thread/mqtt_demo/cubemx/Src/stm32f1xx_hal_msp.c</name>
-                </file>
-              </group>
-            </group>
-          </group>
-        </group>
-      </group>
     </group>
   </group>
   <group>

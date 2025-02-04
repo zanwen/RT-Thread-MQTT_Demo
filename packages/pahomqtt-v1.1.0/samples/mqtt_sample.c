@@ -25,11 +25,12 @@
  * tcp://[fe80::20c:29ff:fe9a:a07e]:1883
  * ssl://[fe80::20c:29ff:fe9a:a07e]:1884
  */
-#define MQTT_URI                "tcp://iot.eclipse.org:1883"
-#define MQTT_USERNAME           "admin"
-#define MQTT_PASSWORD           "admin"
-#define MQTT_SUBTOPIC           "/mqtt/test"
-#define MQTT_PUBTOPIC           "/mqtt/test"
+#define MQTT_URI                "tcp://iot-06z00csfgo84czd.mqtt.iothub.aliyuncs.com:1883"
+#define MQTT_CLIENT_ID          "k29t8jgOqD5.CYTf0IXfGFBad7et4umk|securemode=2,signmethod=hmacsha256,timestamp=1738660371827|"
+#define MQTT_USERNAME           "CYTf0IXfGFBad7et4umk&k29t8jgOqD5"
+#define MQTT_PASSWORD           "5cd9ac2f4ab1877da80524570be08f96f0dadd5a182bfb72c680feb69bfa0dda"
+#define MQTT_SUBTOPIC           "/k29t8jgOqD5/CYTf0IXfGFBad7et4umk/user/get"
+#define MQTT_PUBTOPIC           "/k29t8jgOqD5/CYTf0IXfGFBad7et4umk/user/update"
 #define MQTT_WILLMSG            "Goodbye!"
 
 /* define MQTT client context */
@@ -75,7 +76,6 @@ static int mqtt_start(int argc, char **argv)
 {
     /* init condata param by using MQTTPacket_connectData_initializer */
     MQTTPacket_connectData condata = MQTTPacket_connectData_initializer;
-    static char cid[20] = { 0 };
 
     if (argc != 1)
     {
@@ -93,11 +93,9 @@ static int mqtt_start(int argc, char **argv)
         client.isconnected = 0;
         client.uri = MQTT_URI;
 
-        /* generate the random client ID */
-        rt_snprintf(cid, sizeof(cid), "rtthread%d", rt_tick_get());
         /* config connect param */
         memcpy(&client.condata, &condata, sizeof(condata));
-        client.condata.clientID.cstring = cid;
+        client.condata.clientID.cstring = MQTT_CLIENT_ID;
         client.condata.keepAliveInterval = 30;
         client.condata.cleansession = 1;
         client.condata.username.cstring = MQTT_USERNAME;
@@ -221,6 +219,61 @@ static int mqtt_unsubscribe(int argc, char **argv)
 
     return paho_mqtt_unsubscribe(&client, argv[1]);
 }
+
+
+rt_mq_t mqtt_pub_mq;
+
+static void mqtt_pub_thread_entry(void *parameter)
+{
+    // 等待mqtt连接建立
+    while (!is_started) {
+        rt_thread_mdelay(1);
+    }
+    // 不断接收队列消息发送到阿里云
+    while (1)
+    {
+        uint16_t data;
+        rt_err_t ret = rt_mq_recv(mqtt_pub_mq, &data, 2, RT_WAITING_FOREVER);
+        if(ret != RT_EOK) {
+            LOG_E("receive mqtt_pub_mq fail");
+            continue;
+        }
+        char buf[32];
+        rt_snprintf(buf, sizeof(buf), "temp: %d; humi: %d", data >> 8, data & 0xFF);
+        if(!paho_mqtt_publish(&client, QOS1, MQTT_PUBTOPIC, buf)) {
+            LOG_D("send to aliyun success");
+        } else {
+            LOG_D("send to aliyun fail");
+        }
+    }
+}
+
+static int mqtt_pub_thread_init(void)
+{
+    rt_thread_t thread;
+
+    mqtt_pub_mq = rt_mq_create("mqtt_pub_mq", 2, 10, RT_IPC_FLAG_PRIO);
+    if (mqtt_pub_mq == RT_NULL) {
+        LOG_E("mqtt_pub_mq create failed");
+        return -1;
+    }
+
+    thread = rt_thread_create("mqtt_pub_thread",
+                                     mqtt_pub_thread_entry,
+                                     RT_NULL,
+                                     1024,
+                                     RT_THREAD_PRIORITY_MAX / 2,
+                                     20);
+    if (thread == RT_NULL) {
+        LOG_E("mqtt_pub_thread create failed");
+        return -1;
+    }
+    rt_thread_startup(thread);
+    return RT_EOK;
+}
+
+INIT_APP_EXPORT(mqtt_pub_thread_init);
+
 
 #ifdef FINSH_USING_MSH
 MSH_CMD_EXPORT(mqtt_start, startup mqtt client);

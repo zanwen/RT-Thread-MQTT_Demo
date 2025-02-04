@@ -81,8 +81,6 @@ extern "C" {
 #endif
 #endif /* DBG_LVL */
 
-#define DBG_LEVEL DBG_LOG
-
 /*
  * The color for terminal (foreground)
  * BLACK    30

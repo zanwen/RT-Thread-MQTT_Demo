@@ -647,7 +647,7 @@ static void esp8266_init_thread_entry(void *parameter)
         /* reset module */
         AT_SEND_CMD(client, resp, "AT+RST");
         /* reset waiting delay */
-        rt_thread_mdelay(1000);
+        rt_thread_mdelay(2000);
         /* disable echo */
         AT_SEND_CMD(client, resp, "ATE0");
         /* set current mode to Wi-Fi station */
