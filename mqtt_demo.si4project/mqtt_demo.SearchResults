@@ -1,0 +1,4 @@
+---- rt_device_pin_register Matches (3 in 3 files) ----
+rt_hw_pin_init in drv_gpio.c (drivers) :     return rt_device_pin_register("pin", &_stm32_pin_ops, RT_NULL);
+pin.c (rt-thread\components\drivers\misc) line 77 : int rt_device_pin_register(const char *name, const struct rt_pin_ops *ops, void *user_data)
+pin.h (rt-thread\components\drivers\include\drivers) line 80 : int rt_device_pin_register(const char *name, const struct rt_pin_ops *ops, void *user_data);
