@@ -1,4 +1,8 @@
----- rt_device_pin_register Matches (3 in 3 files) ----
-rt_hw_pin_init in drv_gpio.c (drivers) :     return rt_device_pin_register("pin", &_stm32_pin_ops, RT_NULL);
-pin.c (rt-thread\components\drivers\misc) line 77 : int rt_device_pin_register(const char *name, const struct rt_pin_ops *ops, void *user_data)
-pin.h (rt-thread\components\drivers\include\drivers) line 80 : int rt_device_pin_register(const char *name, const struct rt_pin_ops *ops, void *user_data);
+---- hard fault on thread Matches (7 in 7 files) ----
+rt_hw_hard_fault_exception in cpuport.c (rt-thread\libcpu\arm\cortex-m0) :     rt_kprintf("hard fault on thread: %s\n", rt_current_thread->name);
+rt_hw_hard_fault_exception in cpuport.c (rt-thread\libcpu\arm\cortex-m23) :     rt_kprintf("hard fault on thread: %s\n", rt_current_thread->name);
+rt_hw_hard_fault_exception in cpuport.c (rt-thread\libcpu\arm\cortex-m3) :         rt_kprintf("hard fault on thread: %s\r\n\r\n", rt_thread_self()->name);
+rt_hw_hard_fault_exception in cpuport.c (rt-thread\libcpu\arm\cortex-m33) :         rt_kprintf("hard fault on thread: %s\r\n\r\n", rt_thread_self()->name);
+rt_hw_hard_fault_exception in cpuport.c (rt-thread\libcpu\arm\cortex-m4) :         rt_kprintf("hard fault on thread: %s\r\n\r\n", rt_thread_self()->name);
+rt_hw_hard_fault_exception in cpuport.c (rt-thread\libcpu\arm\cortex-m7) :         rt_kprintf("hard fault on thread: %s\r\n\r\n", rt_thread_self()->name);
+rt_hw_hard_fault_exception in cpuport.c (rt-thread\libcpu\rx) :         rt_kprintf("hard fault on thread: %s\n", rt_current_thread->name);
