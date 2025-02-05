@@ -17,11 +17,11 @@ static void say_hello(char *word) {
     }
 }
 
-static hello_dev hello_anwen_dev = {
-        "anwen",
-        .say_hello = say_hello};
+static rt_device_hello hello_anwen_dev;
 
 static int hello_anwen_dev_init(void) {
+    hello_anwen_dev.name = "anwen";
+    hello_anwen_dev.say_hello = say_hello;
     hello_dev_register(&hello_anwen_dev);
     return 0;
 }

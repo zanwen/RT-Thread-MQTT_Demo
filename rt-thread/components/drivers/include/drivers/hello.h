@@ -3,10 +3,11 @@
 #include <rtthread.h>
 
 typedef struct {
+    struct rt_device parent;
     char* name;
     void (*say_hello)(char* word);
-} hello_dev;
+} rt_device_hello;
 
-void hello_dev_register(hello_dev* dev);
+int hello_dev_register(rt_device_hello* dev);
 
 #endif /* __HELLO_H__ */

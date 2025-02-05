@@ -13,15 +13,15 @@ static void say_hello(char *word) {
     if (strcmp(word, "hi") == 0) {
         LOG_D("turn on the light");
     } else {
-        LOG_D("turn of the light");
+        LOG_D("turn off the light");
     }
 }
 
-static hello_dev hello_andy_dev = {
-        "andy",
-        .say_hello = say_hello};
+static rt_device_hello hello_andy_dev;
 
 static int hello_andy_dev_init(void) {
+    hello_andy_dev.name = "andy";
+    hello_andy_dev.say_hello = say_hello;
     hello_dev_register(&hello_andy_dev);
     return 0;
 }
